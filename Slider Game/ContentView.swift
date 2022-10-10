@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var targetValue = 0
-    @State private var currentValue = 0.0
+    @State private var targetValue = Int.random(in: 1...100)
+    @State private var currentValue = 50.0
+    @State private var score = 0
+    @State private var alertPresented = false
     
     var body: some View {
         VStack {
@@ -22,20 +24,33 @@ struct ContentView: View {
                 Text("100")
                     .padding()
             }
-            Button(action: {}) {
-                Text("Проверь меня!")
-            }
+            Button("Проверь меня!", action: checkResult)
+                .alert("Ваши очки:", isPresented: $alertPresented) {
+                    Button("OK") {}
+                } message: {
+                    Text("\(score)")
+                }
             .padding()
-            Button(action: {}) {
+            Button(action: startNewGame) {
                 Text("Начать заново")
             }
             .padding()
         }
     }
     
+    private func checkResult() {
+        score = computeScore()
+        alertPresented.toggle()
+    }
+    
     private func computeScore() -> Int {
         let difference = abs(targetValue - lround(currentValue))
         return 100 - difference
+    }
+    
+    private func startNewGame() {
+        targetValue = Int.random(in: 1...100)
+        currentValue = 50.0
     }
     
 }
