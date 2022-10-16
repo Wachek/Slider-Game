@@ -16,17 +16,16 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("\(currentValue)")
             Text("Подвиньте слайдер как можно ближе к: \(targetValue)")
                 .padding()
             HStack {
                 Text("0")
                     .padding()
-                RedSlider(currentValue: $currentValue, alpha: $alpha, targetValue: $targetValue)
+                RedSlider(currentValue: $currentValue, alpha: $alpha)
                     .onChange(of: currentValue) { newValue in
                         currentValue = newValue
+                        alpha = CGFloat(Double(computeScore()) / 100)
                     }
-//                Slider(value: $currentValue, in: 0...100, step: 1)
                 Text("100")
                     .padding()
             }
@@ -36,7 +35,7 @@ struct ContentView: View {
                 } message: {
                     Text("\(score)")
                 }
-            .padding()
+                .padding()
             Button(action: startNewGame) {
                 Text("Начать заново")
             }
